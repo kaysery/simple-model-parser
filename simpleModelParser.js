@@ -45,21 +45,23 @@
 
     //the main method that parse de JSON or JavaScript Object to DOM Fields 
     modelParser.parse = function (model) {
+
         setRootModel(model);
         var ids = getAllIds();
-        for(i=0;i<ids.length;i++){
+
+        for (i = 0; i < ids.length; i++) {
 
             var elem = document.getElementById(ids[i]);
-            
+
             if (elem) {
-                
+
                 var obj;
-                if(isObject(ids[i])){
-                   obj = getObjValue(rootModel,ids[i]);
-                }else{
+                if (isObject(ids[i])) {
+                    obj = getObjValue(rootModel, ids[i]);
+                } else {
                     obj = rootModel[ids[i]];
                 }
-                   
+
                 if (isMultiInput(elem)) {
                     fillMultiInput(elem, obj);
                 } else {
@@ -71,22 +73,22 @@
 
     };
 
-    
-    var isObject = function(str){
+
+    var isObject = function (str) {
 
         return str.split(".").length > 1;
-        
+
     }
 
     var getAllIds = function () {
         var ids = [];
+        var allElements = document.getElementsByTagName("*");
 
-
-        for (i = 0; i < document.body.children.length; i++) {
-
-            if (document.body.children[i].hasAttribute("id"))
-                ids.push(document.body.children[i].getAttribute("id"));
-
+        for (var i = 0, n = allElements.length; i < n; ++i) {
+            var el = allElements[i];
+            if (el.id) {
+                ids.push(el.id);
+            }
         }
 
         return ids;
@@ -235,6 +237,8 @@
 
 
     var fillMultiInput = function (elem, collection) {
+
+
         if (Array.isArray(collection)) {
             if (isSelect(elem)) {
                 fillSelect(elem, collection);
